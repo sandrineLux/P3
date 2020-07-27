@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+    <head>
+        <html lang="en" dir="ltr">
+        <meta charset="utf-8">
+        <title>Movie Recommender System</title> 
+            
+        <style type="text/css">    
+            html { 
+              background: url(https://image.freepik.com/free-photo/cinema-concept-with-popcorn-background_23-2147989050.jpg) no-repeat center center fixed; 
+              -webkit-background-size: cover;
+              -moz-background-size: cover;
+              -o-background-size: cover;
+              background-size: cover;
+             }
+            
+          body
+          {
+            border: 0px solid black;
+            padding: 0px;
+            background-repeat: no-repeat;
+            background-size: 450px 450px; 
+            background-position: center center;
+            } 
+            
+            div {margin-left: 300px}
+            p {margin-left: inherit}
+
+        </style>
+            
+    </head>
+
+    <body>
+        {% extends "template.html" %}
+        {% block content %}
+        <br>
+        <h1 style="text-align:center;"><font color="red"> Welcome to the Movie Recommender </h1>
+        {% if error %}
+            <p class=error><strong>Error:</strong> {{ error }}
+        {% endif %}
+        <form action="{{ url_for('recommendation') }}" method="POST">
+            <div>
+            <p>
+            <h2><font color="black"> Please enter a movie id or title </h2>
+                <strong><font size="4" color="black">Movie Title: </font></strong><br/>
+                <input type="text" id="fmovie" name="fmovie">
+                <button type="submit" class="btn btn-success"><font color="black"><strong>Get Recommendations!</strong></button>
+            </p>
+            </div>
+
+        </form>
+        {% endblock %}
+    </body>
+</html>
