@@ -40,7 +40,7 @@ def recommendation():
             return movies.sort_values(by=['score'], ascending=False)['title'][:n_recommendations]
 
         
-        def recommend(m):
+        def recommend(m_or_i):
             dfresult = pd.DataFrame(columns=['Id','title'])
             if m_or_i in df.index:
                 m = df.iloc[2]['movie_title']
