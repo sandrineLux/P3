@@ -26,6 +26,7 @@ def recommendation():
         
         #reading the original dataset
         df = pd.read_csv('movies.csv')
+        df['Id'] = df['Id'].astype(str)
         cv = CountVectorizer()
         
         count_matrix = cv.fit_transform(df['combination'])
