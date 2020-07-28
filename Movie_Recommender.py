@@ -42,7 +42,7 @@ def recommendation():
         
         def recommend(m_or_i):
             dfresult = pd.DataFrame(columns=['Id','title'])
-            if int(m_or_i) in df.index:
+            if m_or_i in df['Id'].unique():
                 m = df.iloc[int(m_or_i)]['movie_title']
             elif m_or_i in df['movie_title'].unique():
                 m = m_or_i
