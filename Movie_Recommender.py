@@ -42,14 +42,13 @@ def recommendation():
         
         def recommend(m_or_i):
             dfresult = pd.DataFrame(columns=['Id','title'])
-            if m_or_i in df.index:
-                m = df.iloc[2]['movie_title']
+            if int(m_or_i) in df.index:
+                m = df.iloc[int(m_or_i)]['movie_title']
             elif m_or_i in df['movie_title'].unique():
                 m = m_or_i
             else:
                 print('Ce film n''est pas dans notre database. Veuillez choisir un autre film.')
                 raise ValueError('The film is not in our database. Please choose another film.')
-                return
 
             i = df.loc[df['movie_title'] == m].index[0]
             dfcluster = df.loc[df['cluster'] == df['cluster'][i]]
