@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request
 import pandas as pd
 import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 from flask_table import Table, Col
 
 #building flask table for showing recommendation results
@@ -26,11 +24,6 @@ def recommendation():
         
         #reading the original dataset
         df = pd.read_csv('movies.csv')
-        df['Id'] = df['Id'].astype(str)
-        cv = CountVectorizer()
-        
-        count_matrix = cv.fit_transform(df['combination'])
-        cosine_sim = cosine_similarity(count_matrix)
 
         #reading movie title given by user in the front-end
         Movie = request.form.get('fmovie')
