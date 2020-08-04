@@ -8,7 +8,7 @@ from flask_table import Table, Col
 #building flask table for showing recommendation results
 class Results(Table):
     id = Col('Id',show=False)
-    title = Col('movie')
+    title = Col('movie_title')
 
 app = Flask(__name__)
 
@@ -35,39 +35,22 @@ def recommendation():
         #reading movie title given by user in the front-end
         Movie = request.form.get('fmovie')
        
-        #Generating recommendations based on top score movies
-        def recommendations(X, n_recommendations):
-            movies['score'] = get_score(categories, preferences)
-            return movies.sort_values(by=['score'], ascending=False)['title'][:n_recommendations]
-
-        
         def recommend(m_or_i):
-            dfresult = pd.DataFrame(columns=['Id','title'])
+            m_or_i = m_or_i.lower()
             if m_or_i in df['Id'].unique():
                 m = df.iloc[int(m_or_i)]['movie_title']
-            elif m_or_i in df['movie_title'].unique():
+                m = m.lower()
+            elif m_or_i in df['movie_title'].str.lower().unique():
                 m = m_or_i
             else:
                 print('Ce film n''est pas dans notre database. Veuillez choisir un autre film.')
                 raise ValueError('The film is not in our database. Please choose another film.')
 
-            i = df.loc[df['movie_title'] == m].index[0]
-            dfcluster = df.loc[df['cluster'] == df['cluster'][i]]
-            dfcluster = dfcluster.reset_index()
-            i = dfcluster.loc[dfcluster['movie_title'] == m].index[0]
-            cv = CountVectorizer()
-            count_matrix = cv.fit_transform(dfcluster['combination'])
-            cosine_sim = cosine_similarity(count_matrix)
-
-            lst = list(enumerate(cosine_sim[i]))
-            lst = sorted(lst,key = lambda x:x[1],reverse=True)
-            lst = lst[1:6]
-            l = []
-            for i in range(len(lst)):
-                a = lst[i][0]
-                l.append(dfcluster['movie_title'][a])
-                dfresult = dfresult.append({'title': l[i],'Id': i}, ignore_index=True)
-            return (dfresult['title'])
+            i = df.loc[df['movie_title'].str.lower() == m].index[0]
+            cluster = df.iloc[i]['cluster'] 
+            dfresult = df[(df.cluster==cluster) & (df.movie_title.str.lower() != m)].sort_values('score', ascending=False).head(5)
+            dfresult = dfresult.reset_index()
+            return (dfresult['movie_title'])
 
         #printing top-10 recommendations
         try:
