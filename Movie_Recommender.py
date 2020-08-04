@@ -41,7 +41,8 @@ def recommendation():
 
             i = df.loc[df['movie_title'].str.lower() == m].index[0]
             cluster = df.iloc[i]['cluster'] 
-            dfresult = df[(df.cluster==cluster) & (df.movie_title.str.lower() != m)].sort_values('score', ascending=False).head(5)
+            dfresult = df[(df.cluster==cluster) & (df.movie_title.str.lower() != m)].sort_values('score', ascending=False).head(20)
+            dfresult = dfresult.sample(5)
             dfresult = dfresult.reset_index()
             return (dfresult['movie_title'])
 
